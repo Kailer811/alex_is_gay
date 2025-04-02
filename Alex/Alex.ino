@@ -1,5 +1,5 @@
 #include <serialize.h>
-#include <math.h>
+
 #include "packet.h"
 #include "constants.h"
 
@@ -10,10 +10,6 @@ volatile TDirection dir;
 /*
  * Alex's configuration constants
  */
-
-#define ALEX_LENGTH 26.5
-#define ALEX_BREADTH 15.5
-#define PI 3.141592654
 
 // Number of ticks per revolution from the 
 // wheel encoder.
@@ -29,8 +25,6 @@ volatile TDirection dir;
 /*
  *    Alex's State Variables
  */
-float alexDiagonal = 0.0; // 30.45078;
-float alexCirc = 0.0; // 95.66395;
 
 // Store the ticks from Alex's left and
 // right encoders.
@@ -53,14 +47,6 @@ volatile unsigned long rightRevs;
 // Forward and backward distance traveled
 volatile unsigned long forwardDist;
 volatile unsigned long reverseDist;
-
-// Variables to track if Alex has moved a set distance
-unsigned long deltaDist;
-unsigned long newDist;
-
-// Variables to track turning angle
-unsigned long deltaTicks;
-unsigned long targetTicks;
 
 
 /*
@@ -182,6 +168,7 @@ void sendOK()
   okPacket.command = RESP_OK;
   sendResponse(&okPacket);  
 }
+
 
 void sendResponse(TPacket *packet)
 {
@@ -320,6 +307,7 @@ void startSerial()
 {
   // Empty for now. To be replaced with bare-metal code
   // later on.
+  
 }
 
 // Read the serial port. Returns the read character in
@@ -373,10 +361,10 @@ void clearCounters()
 // Clears one particular counter
 void clearOneCounter(int which)
 {
-  // modify to clear a specific counter
   clearCounters();
 }
 // Intialize Alex's internal states
+
 
 void initializeState()
 {
@@ -408,27 +396,23 @@ void handleCommand(TPacket *command)
         sendOK();
         stop();
         break;
-    case COMMAND_GET_STATS:
-        sendOK();
-        sendStatus();
-    case COMMAND_CLEAR_STATS:
-        sendOK();
-        clearOneCounter(command->params[0]);
     case COMMAND_ARM_OPEN:
 	sendOK();
-	//open arm
+	//replace w open function
 	dbprintf("open");
+	dbprintf('\n');
 	break;
     case COMMAND_ARM_CLOSE:
 	sendOK();
-	//close arm
-	dbprintf("close");
+	dbprintf("close"); //replace w close function
+	dbprintf('\n');
 	break;
     case COMMAND_COLOUR:
 	sendOK();
-	//activate colour sensor
-	dbprintf("colour sensor");
+	dbprintf("colour"); //replace w colour function
+	dbprintf('\n');
 	break;
+	
     default:
       sendBadCommand();
   }
@@ -473,8 +457,6 @@ void waitForHello()
 
 void setup() {
   // put your setup code here, to run once:
-  alexDiagonal = sqrt((ALEX_LENGTH * ALEX_LENGTH) + (ALEX_BREADTH * ALEX_BREADTH));
-  alexCirc = PI * alexDiagonal;
 
   cli();
   setupEINT();
@@ -521,82 +503,16 @@ void loop() {
   
   if(result == PACKET_OK)
     handlePacket(&recvPacket);
-  else {
+  else
     if(result == PACKET_BAD)
     {
       sendBadPacket();
     }
-    else {
+    else
       if(result == PACKET_CHECKSUM_BAD)
       {
         sendBadChecksum();
       } 
-    }
-  }
-  if (deltaDist > 0)
-  {
-    if (dir == FORWARD)
-    {
-      if (forwardDist > newDist)
-      {
-        deltaDist = 0;
-        newDist = 0;
-        stop();
-      }
-    }
-  }
-  else
-  {
-    if (dir == BACKWARD)
-    {
-      if (reverseDist > newDist)
-      {
-        deltaDist = 0;
-        newDist = 0;
-        stop();
-      }
-    }
-    else
-    {
-      if (dir == STOP)
-      {
-        deltaDist = 0;
-        newDist = 0;
-        stop();
-      }
-    }
-  }
-  if (deltaTicks > 0)
-  {
-    if (dir == LEFT)
-    {
-      if (leftReverseTicksTurns >= targetTicks)
-      {
-        deltaTicks = 0;
-        targetTicks = 0;
-        stop();
-      }
-    }
-    else
-    {
-      if (dir == RIGHT)
-      {
-        if (rightReverseTicksTurns >= targetTicks)
-        {
-          deltaTicks = 0;
-          targetTicks = 0;
-          stop();
-        }
-      }
-      else
-      {
-        if (dir == STOP)
-        {
-          deltaTicks = 0;
-          targetTicks = 0;
-          stop();
-        }
-      }
-    }
-  }
+      
 }
+

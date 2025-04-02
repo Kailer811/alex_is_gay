@@ -48,19 +48,21 @@ typedef enum
 
 typedef enum
 {
-	FORWARD = 1,
-	BACKWARD = 2,
-	LEFT = 3,
-	RIGHT = 4
+  FORWARD=1,
+  BACKWARD=2,
+  LEFT=3,
+  RIGHT=4
 } TDirection;
 
+// Direction values
 typedef enum Tdir
 {
-	STOP,
-	GO,
-	BACK,
-	CCW,
-	CW
+  STOP,
+  GO,
+  BACK,
+  CCW,
+  CW
 } Tdir;
 
 #endif
+

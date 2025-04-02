@@ -281,10 +281,10 @@ void handleCommand(void *conn, const char *buffer)
 			commandPacket.command = COMMAND_ARM_CLOSE;
 			uartSendPacket(&commandPacket);
 			break;
-		case 'l':
-		case 'L':
+		case 'i':
+		case 'I':
 			commandPacket.command = COMMAND_COLOUR;
-			uartSentPacket(&commandPacket);
+			uartSendPacket(&commandPacket);
 			break;
 
 		default:
