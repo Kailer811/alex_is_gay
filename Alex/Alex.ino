@@ -415,6 +415,21 @@ void handleCommand(TPacket *command)
     case COMMAND_CLEAR_STATS:
         sendOK();
         clearOneCounter(command->params[0]);
+    case COMMAND_ARM_OPEN:
+	sendOK();
+	//open arm
+	dbprintf("open");
+	break;
+    case COMMAND_ARM_CLOSE:
+	sendOK();
+	//close arm
+	dbprintf("close");
+	break;
+    case COMMAND_COLOUR:
+	sendOK();
+	//activate colour sensor
+	dbprintf("colour sensor");
+	break;
     default:
       sendBadCommand();
   }
