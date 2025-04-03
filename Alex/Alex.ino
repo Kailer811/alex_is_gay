@@ -399,18 +399,15 @@ void handleCommand(TPacket *command)
     case COMMAND_ARM_OPEN:
 	sendOK();
 	//replace w open function
-	dbprintf("open");
-	dbprintf('\n');
+	dbprintf("open \n");
 	break;
     case COMMAND_ARM_CLOSE:
 	sendOK();
-	dbprintf("close"); //replace w close function
-	dbprintf('\n');
+	dbprintf("close \n"); //replace w close function
 	break;
     case COMMAND_COLOUR:
 	sendOK();
-	dbprintf("colour"); //replace w colour function
-	dbprintf('\n');
+	dbprintf("colour \n"); //replace w colour function
 	break;
 	
     default:
@@ -515,4 +512,3 @@ void loop() {
       } 
       
 }
-
