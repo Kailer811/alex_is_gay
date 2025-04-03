@@ -2,6 +2,7 @@
 
 #include "packet.h"
 #include "constants.h"
+#include "arm.h"
 
 volatile TDirection dir;
 
@@ -400,10 +401,12 @@ void handleCommand(TPacket *command)
 	sendOK();
 	//replace w open function
 	dbprintf("open \n");
+	arm_open();
 	break;
     case COMMAND_ARM_CLOSE:
 	sendOK();
 	dbprintf("close \n"); //replace w close function
+	arm_close();
 	break;
     case COMMAND_COLOUR:
 	sendOK();
@@ -462,6 +465,7 @@ void setup() {
   enablePullups();
   initializeState();
   sei();
+  arm_init();
 }
 
 void handlePacket(TPacket *packet)
