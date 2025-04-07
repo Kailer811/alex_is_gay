@@ -2,9 +2,9 @@
 
 // Motor control
 #define FRONT_LEFT   4 // M4 on the driver shield confirmed
-#define FRONT_RIGHT  3 // M1 on the driver shield
-#define BACK_LEFT    1 // M3 on the driver shield
-#define BACK_RIGHT   2 // M2 on the driver shield
+#define FRONT_RIGHT  3 // M1 on the driver shield confirmed
+#define BACK_LEFT    1 // M3 on the driver shield confirmed
+#define BACK_RIGHT   2 // M2 on the driver shield confirmed
 
 AF_DCMotor motorFL(FRONT_LEFT);
 AF_DCMotor motorFR(FRONT_RIGHT);
@@ -28,10 +28,10 @@ void move(float speed, int direction)
         motorBR.run(BACKWARD); 
       break;
       case GO:
-        // motorFL.run(FORWARD);
-        motorFR.run(FORWARD);    // back left
-        // motorBL.run(FORWARD);
-        // motorBR.run(FORWARD); 
+        motorFL.run(FORWARD);
+        motorFR.run(FORWARD);
+        motorBL.run(FORWARD);
+        motorBR.run(FORWARD); 
       break;
       case CW:
         motorFL.run(FORWARD);

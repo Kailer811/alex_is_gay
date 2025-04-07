@@ -42,7 +42,7 @@ void readColour(unsigned long &red, unsigned long &green, unsigned long &blue)
 }
 */
 
-void readColour(unsigned long &red, unsigned long &green, unsigned long &blue) {
+void readColour(unsigned float &red, unsigned float &green, unsigned float &blue) {
  pinMode(23, OUTPUT);
   pinMode(24, OUTPUT);
   pinMode(25, OUTPUT);

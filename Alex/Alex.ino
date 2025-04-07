@@ -5,18 +5,48 @@
 #include "arm.h"
 #include "coloursensor.h"
 
-unsigned long red = 0;
-unsigned long green = 0;
-unsigned long blue = 0;
+unsigned float red = 0;
+unsigned float green = 0;
+unsigned float blue = 0;
+/*
 void print_colour()
 {
 	dbprintf("RED: ");
-	dbprintf("%lu\n", red);
+	dbprintf("%u\n", red);
 	dbprintf("GREEN: ");
-	dbprintf("%lu\n", green);
+	dbprintf("%u\n", green);
 	dbprintf("BLUE: ");
-	dbprintf("%lu\n", blue);
+	dbprintf("%u\n", blue);
 }
+*/
+
+void identifyColour(unsigned float red, unsigned float green, unsigned float blue){
+    unsigned float ratio_red = red / red;
+    unsigned float ratio_green = green / red;
+    unsigned float ratio_blue = blue / red;
+    dbprintf("Red ratio: %u\n", ratio_red);
+    dbprintf("Green ratio: %u", ratio_green);
+    dbprintf("Blue ratio: %u", ratio_blue);
+
+    if(ratio_green > 0.95 && ratio_green < 1.10){
+        dbprintf("White\n");
+    }
+    else if(ratio_green > 1.25){
+        dbprintf("Red\n");
+    }
+    else if(ratio_green > 0.6 && ratio_green <= 0.95)
+    {
+        dbprintf("Green\n");
+    } 
+    else if(ratio_blue < 0.70)
+    {
+        dbprintf("WALL\n");
+    }
+    else{
+        dbprintf("Unknown colour detected");
+    }
+}
+
 
 volatile TDirection dir;
 
@@ -424,7 +454,7 @@ void handleCommand(TPacket *command)
     case COMMAND_COLOUR:
 	sendOK();
 	readColour(red, green, blue);
-	print_colour();
+	identifyColour(red, green, blue);
 	red, green, blue = 0;
 	break;
 	
