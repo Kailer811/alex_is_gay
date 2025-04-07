@@ -229,32 +229,32 @@ void handleCommand(void *conn, const char *buffer)
 	
 	switch(cmd)
 	{
-		case 'f':
-		case 'F':
+		case 'w':
+		case 'W':
 			commandPacket.command = COMMAND_FORWARD;
-			uartSendPacket(&commandPacket);
-			break;
-
-		case 'b':
-		case 'B':
-			commandPacket.command = COMMAND_REVERSE;
-			uartSendPacket(&commandPacket);
-			break;
-
-		case 'l':
-		case 'L':
-			commandPacket.command = COMMAND_TURN_LEFT;
-			uartSendPacket(&commandPacket);
-			break;
-
-		case 'r':
-		case 'R':
-			commandPacket.command = COMMAND_TURN_RIGHT;
 			uartSendPacket(&commandPacket);
 			break;
 
 		case 's':
 		case 'S':
+			commandPacket.command = COMMAND_REVERSE;
+			uartSendPacket(&commandPacket);
+			break;
+
+		case 'a':
+		case 'A':
+			commandPacket.command = COMMAND_TURN_LEFT;
+			uartSendPacket(&commandPacket);
+			break;
+
+		case 'd':
+		case 'D':
+			commandPacket.command = COMMAND_TURN_RIGHT;
+			uartSendPacket(&commandPacket);
+			break;
+
+		case 'q':
+		case 'Q':
 			commandPacket.command = COMMAND_STOP;
 			uartSendPacket(&commandPacket);
 			break;
@@ -271,18 +271,18 @@ void handleCommand(void *conn, const char *buffer)
 			commandPacket.command = COMMAND_GET_STATS;
 			uartSendPacket(&commandPacket);
 			break;
-		case 'o':
-		case 'O':
+		case 'e':
+		case 'E':
 			commandPacket.command = COMMAND_ARM_OPEN;
 			uartSendPacket(&commandPacket);
 			break;
-		case 'p':
-		case 'P':
+		case 'r':
+		case 'R':
 			commandPacket.command = COMMAND_ARM_CLOSE;
 			uartSendPacket(&commandPacket);
 			break;
-		case 'i':
-		case 'I':
+		case 't':
+		case 'T':
 			commandPacket.command = COMMAND_COLOUR;
 			uartSendPacket(&commandPacket);
 			break;

@@ -3,6 +3,20 @@
 #include "packet.h"
 #include "constants.h"
 #include "arm.h"
+#include "coloursensor.h"
+
+unsigned long red = 0;
+unsigned long green = 0;
+unsigned long blue = 0;
+void print_colour()
+{
+	dbprintf("RED: ");
+	dbprintf("%lu\n", red);
+	dbprintf("GREEN: ");
+	dbprintf("%lu\n", green);
+	dbprintf("BLUE: ");
+	dbprintf("%lu\n", blue);
+}
 
 volatile TDirection dir;
 
@@ -399,18 +413,19 @@ void handleCommand(TPacket *command)
         break;
     case COMMAND_ARM_OPEN:
 	sendOK();
-	//replace w open function
 	dbprintf("open \n");
 	arm_open();
 	break;
     case COMMAND_ARM_CLOSE:
 	sendOK();
-	dbprintf("close \n"); //replace w close function
+	dbprintf("close \n");
 	arm_close();
 	break;
     case COMMAND_COLOUR:
 	sendOK();
-	dbprintf("colour \n"); //replace w colour function
+	readColour(red, green, blue);
+	print_colour();
+	red, green, blue = 0;
 	break;
 	
     default:
@@ -456,8 +471,6 @@ void waitForHello()
 }
 
 void setup() {
-  // put your setup code here, to run once:
-
   cli();
   setupEINT();
   setupSerial();
@@ -466,6 +479,7 @@ void setup() {
   initializeState();
   sei();
   arm_init();
+  colour_sensor_init();
 }
 
 void handlePacket(TPacket *packet)
@@ -491,13 +505,6 @@ void handlePacket(TPacket *packet)
 }
 
 void loop() {
-// Uncomment the code below for Step 2 of Activity 3 in Week 8 Studio 2
-
- // forward(0, 100);
-
-// Uncomment the code below for Week 9 Studio 2
-
- // put your main code here, to run repeatedly:
   TPacket recvPacket; // This holds commands from the Pi
 
   TResult result = readPacket(&recvPacket);
