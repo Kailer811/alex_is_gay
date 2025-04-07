@@ -5,28 +5,20 @@
 #include "arm.h"
 #include "coloursensor.h"
 
-unsigned float red = 0;
-unsigned float green = 0;
-unsigned float blue = 0;
-/*
-void print_colour()
-{
-	dbprintf("RED: ");
-	dbprintf("%u\n", red);
-	dbprintf("GREEN: ");
-	dbprintf("%u\n", green);
-	dbprintf("BLUE: ");
-	dbprintf("%u\n", blue);
-}
-*/
+unsigned long red = 0;
+unsigned long green = 0;
+unsigned long blue = 0;
 
-void identifyColour(unsigned float red, unsigned float green, unsigned float blue){
-    unsigned float ratio_red = red / red;
-    unsigned float ratio_green = green / red;
-    unsigned float ratio_blue = blue / red;
-    dbprintf("Red ratio: %u\n", ratio_red);
-    dbprintf("Green ratio: %u", ratio_green);
-    dbprintf("Blue ratio: %u", ratio_blue);
+void identifyColour(unsigned long red, unsigned long green, unsigned long blue){
+    dbprintf("Original red: %lu\n", red);
+    dbprintf("Original green: %lu\n", green);
+    dbprintf("Original blue: %lu\n", blue);
+    double ratio_red = (double)red / red;
+    double ratio_green = (double)green / red;
+    double ratio_blue = (double)blue / red;
+    dbprintf("Red ratio: %.2f\n", ratio_red);
+    dbprintf("Green ratio: %.2f\n", ratio_green);
+    dbprintf("Blue ratio: %.2f\n", ratio_blue);
 
     if(ratio_green > 0.95 && ratio_green < 1.10){
         dbprintf("White\n");
@@ -38,10 +30,6 @@ void identifyColour(unsigned float red, unsigned float green, unsigned float blu
     {
         dbprintf("Green\n");
     } 
-    else if(ratio_blue < 0.70)
-    {
-        dbprintf("WALL\n");
-    }
     else{
         dbprintf("Unknown colour detected");
     }
@@ -457,7 +445,10 @@ void handleCommand(TPacket *command)
 	identifyColour(red, green, blue);
 	red, green, blue = 0;
 	break;
-	
+	case COMMAND_RELEASE;
+	sendOK();
+	release();
+	break;
     default:
       sendBadCommand();
   }

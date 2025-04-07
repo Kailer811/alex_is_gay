@@ -286,6 +286,11 @@ void handleCommand(void *conn, const char *buffer)
 			commandPacket.command = COMMAND_COLOUR;
 			uartSendPacket(&commandPacket);
 			break;
+		case 'x':
+		case 'X':
+			commandPacket.command = COMMAND_RELEASE;
+			uartSendPacket(&commandPacket);
+			break;
 
 		default:
 			printf("Bad command\n");
