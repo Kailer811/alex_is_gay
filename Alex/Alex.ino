@@ -553,17 +553,39 @@ void loop() {
 
   TResult result = readPacket(&recvPacket);
   
-  if(result == PACKET_OK)
+  if(result == PACKET_OK) {
     handlePacket(&recvPacket);
-  else
+  } else {
     if(result == PACKET_BAD)
     {
       sendBadPacket();
     }
-    else
+    } else {
       if(result == PACKET_CHECKSUM_BAD)
       {
         sendBadChecksum();
       } 
+    }
+  if(deltaDist > 0) {
+	if(dir==FORWARD) {
+		if(forwardDist > newDist) {
+			deltaDist=0;
+			newDist=0;
+			stop();
+		}
+	} else {
+	if(dir == BACKWARD) {
+		if(reverseDist > newDist) {
+			deltaDist=0;
+			newDist=0;
+			stop();
+		}
+	} else {
+	if(dir == STOP) {
+		deltaDist=0;
+		newDist=0;
+		stop();
+	}
+  }
       
 }
