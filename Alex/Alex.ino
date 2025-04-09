@@ -88,12 +88,12 @@ volatile unsigned long forwardDist;
 volatile unsigned long reverseDist;
 
 // Variables to track if Alex has moved a set distance
-unsigned long deltaDist;
-unsigned long newDist;
+unsigned long deltaDist = 0;
+unsigned long newDist = 0;
 
 // Variables to track turning angle
-unsigned long deltaTicks;
-unsigned long targetTicks;
+unsigned long deltaTicks = 0;
+unsigned long targetTicks = 0;
 
 /*
  * 
@@ -141,6 +141,11 @@ void sendStatus()
   statusPacket.params[7] = rightReverseTicksTurns;
   statusPacket.params[8] = forwardDist;
   statusPacket.params[9] = reverseDist;
+  statusPacket.params[10] = deltaDist;
+  statusPacket.params[11] = newDist;
+  statusPacket.params[12] = deltaTicks;
+  statusPacket.params[13] = targetTicks;
+
   sendResponse(&statusPacket);
 }
 
@@ -249,7 +254,7 @@ void enablePullups()
   
 }
 
-// Functions to be called by INT2 and INT3 ISRs.
+// Functions to be called by INT2 and INT3 ISRs. left enc pin 18, right 19
 void leftISR()
 { 
   if (dir == FORWARD)
@@ -564,6 +569,35 @@ void loop() {
       if(result == PACKET_CHECKSUM_BAD)
       {
         sendBadChecksum();
-      } 
+      }
+	if(deltaDist > 0)
+	{
+		if(dir==FORWARD)
+		{
+			if(forwardDist > newDist)
+			{
+				deltaDist=0;
+				newDist=0;
+				stop();
+			}
+		}
+		else
+		if(dir == BACKWARD)
+		{
+			if(reverseDist > newDist)
+			{
+			deltaDist=0;
+			newDist=0;
+			stop();
+			}
+		}
+		else
+		if(dir == STOP)
+		{
+			deltaDist=0;
+			newDist=0;
+			stop();
+		}
+	} 
       
 }
