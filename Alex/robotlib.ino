@@ -58,12 +58,30 @@ void forward(float dist, float speed)
 {
   dir = (TDirection) FORWARD;
   move(speed, FORWARD);
+  if (dist > 0)
+  {
+    deltaDist = dist;
+  }
+  else
+  {
+    deltaDist = 9999999;
+  }
+  newDist = forwardDist + deltaDist;
 }
 
 void backward(float dist, float speed)
 {
   dir = (TDirection) BACKWARD;
   move(speed, BACKWARD);
+  if (dist > 0)
+  {
+    deltaDist = dist;
+  }
+  else
+  {
+    deltaDist = 9999999;
+  }
+  newDist = reverseDist + deltaDist;
 }
 
 void ccw(float ang, float speed)
@@ -78,13 +96,37 @@ void cw(float ang, float speed)
   move(speed, CW);
 }
 
+unsigned long computeDeltaTicks(float ang)
+{
+  unsigned long ticks = (unsigned long) ((ang * alexCirc * COUNTS_PER_REV) / (360.0 * WHEEL_CIRC));
+  return ticks;
+}
+
 void left(float ang, float speed)
 {
-  ccw(ang,speed);
+  if (ang == 0)
+  {
+    deltaTicks = 99999999;
+  }
+  else
+  {
+    deltaTicks = computeDeltaTicks(ang);
+  }
+  targetTicks = leftReverseTicksTurns + deltaTicks;
+  ccw(targetTicks,speed);
 }
 
 void right(float ang, float speed)
 {
+  if (ang == 0)
+  {
+    deltaTicks = 99999999;
+  }
+  else
+  {
+    deltaTicks = computeDeltaTicks(ang);
+  }
+  targetTicks = rightReverseTicksTurns + deltaTicks;
   cw(ang,speed);
 }
 

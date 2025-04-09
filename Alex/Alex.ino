@@ -44,6 +44,10 @@ volatile TDirection dir;
  * Alex's configuration constants
  */
 
+#define ALEX_LENGTH 26.5
+#define ALEX_BREADTH 15
+#define PI 3.141592654
+
 // Number of ticks per revolution from the 
 // wheel encoder.
 
@@ -58,6 +62,8 @@ volatile TDirection dir;
 /*
  *    Alex's State Variables
  */
+float alexDiagonal = 0.0; // 30.45078;
+float alexCirc = 0.0; // 95.66395;
 
 // Store the ticks from Alex's left and
 // right encoders.
@@ -81,6 +87,13 @@ volatile unsigned long rightRevs;
 volatile unsigned long forwardDist;
 volatile unsigned long reverseDist;
 
+// Variables to track if Alex has moved a set distance
+unsigned long deltaDist;
+unsigned long newDist;
+
+// Variables to track turning angle
+unsigned long deltaTicks;
+unsigned long targetTicks;
 
 /*
  * 
@@ -500,6 +513,8 @@ void waitForHello()
 }
 
 void setup() {
+  alexDiagonal = sqrt((ALEX_LENGTH * ALEX_LENGTH) + (ALEX_BREADTH * ALEX_BREADTH));
+  alexCirc = PI * alexDiagonal;
   cli();
   setupEINT();
   setupSerial();
