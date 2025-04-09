@@ -429,6 +429,14 @@ void handleCommand(TPacket *command)
         sendOK();
         stop();
         break;
+    case COMMAND_GET_STATS:
+	sendOK();
+	sendStatus();
+	break;
+    case COMMAND_CLEAR_STATS:
+	sendOK();
+	clearCounters();
+	break;	
     case COMMAND_ARM_OPEN:
 	sendOK();
 	dbprintf("open \n");
@@ -445,7 +453,7 @@ void handleCommand(TPacket *command)
 	identifyColour(red, green, blue);
 	red, green, blue = 0;
 	break;
-	case COMMAND_RELEASE;
+    case COMMAND_RELEASE:
 	sendOK();
 	release();
 	break;
